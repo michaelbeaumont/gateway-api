@@ -34,7 +34,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/yaml"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"sigs.k8s.io/gateway-api/apis/v1alpha2"
+	"sigs.k8s.io/gateway-api/apis/v1beta1"
 	"sigs.k8s.io/gateway-api/conformance"
 	"sigs.k8s.io/gateway-api/conformance/utils/config"
 )
@@ -58,7 +58,7 @@ type Applier struct {
 // Gateway with 2 listeners on different ports, there should be at least three
 // validPorts.
 // If empty or nil, Gateway listener ports are not modified.
-func NewApplier(namespaceLabels map[string]string, validPorts []v1alpha2.PortNumber) *Applier {
+func NewApplier(namespaceLabels map[string]string, validPorts []v1beta1.PortNumber) *Applier {
 	return &Applier{
 		namespaceLabels: namespaceLabels,
 		availablePorts:  validPorts,
@@ -91,14 +91,14 @@ func (a *Applier) prepareGateway(t *testing.T, uObj *unstructured.Unstructured, 
 	err := unstructured.SetNestedField(uObj.Object, gatewayClassName, "spec", "gatewayClassName")
 	require.NoErrorf(t, err, "error setting `spec.gatewayClassName` on %s Gateway resource", uObj.GetName())
 
-	var allocatedPorts []v1alpha2.PortNumber
+	var allocatedPorts []v1beta1.PortNumber
 
 	if len(a.availablePorts) > 0 {
 		uListeners, _, err := unstructured.NestedSlice(uObj.Object, "spec", "listeners")
 		require.NoErrorf(t, err, "error getting `spec.listeners` on %s Gateway resource", uObj.GetName())
 
 		var listeners []interface{}
-		newPorts := map[int64]v1alpha2.PortNumber{}
+		newPorts := map[int64]v1beta1.PortNumber{}
 		for i, uListener := range uListeners {
 			listener, ok := uListener.(map[string]interface{})
 			require.Truef(t, ok, "unexpected type at `spec.listeners[%d]` on %s Gateway resource", i, uObj.GetName())

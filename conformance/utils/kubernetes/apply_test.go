@@ -24,7 +24,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/yaml"
 
-	"sigs.k8s.io/gateway-api/apis/v1alpha2"
+	"sigs.k8s.io/gateway-api/apis/v1beta1"
 	_ "sigs.k8s.io/gateway-api/conformance/utils/flags"
 )
 
@@ -164,7 +164,7 @@ spec:
 		name: "multiple gateways each with multiple listeners",
 		applier: NewApplier(
 			nil,
-			[]v1alpha2.PortNumber{8000, 8001, 8002, 8003},
+			[]v1beta1.PortNumber{8000, 8001, 8002, 8003},
 		),
 		givens: []given{{
 			resources: `
@@ -278,7 +278,7 @@ spec:
 		}},
 	}, {
 		name:    "gateway with multiple listeners on the same port",
-		applier: NewApplier(nil, []v1alpha2.PortNumber{8000}),
+		applier: NewApplier(nil, []v1beta1.PortNumber{8000}),
 		givens: []given{{
 			resources: `
 apiVersion: gateway.networking.k8s.io/v1alpha2
@@ -343,7 +343,7 @@ spec:
 	}, {
 		name: "multiple calls to apply with gateways",
 		applier: NewApplier(
-			nil, []v1alpha2.PortNumber{8000, 8001},
+			nil, []v1beta1.PortNumber{8000, 8001},
 		),
 		givens: []given{{
 			resources: `
@@ -429,7 +429,7 @@ spec:
 	}, {
 		name: "multiple calls to apply with gateways, free ports",
 		applier: NewApplier(
-			nil, []v1alpha2.PortNumber{8000},
+			nil, []v1beta1.PortNumber{8000},
 		),
 		givens: []given{{
 			resources: `
