@@ -433,7 +433,7 @@ func findConditionInList(t *testing.T, conditions []metav1.Condition, condName, 
 				t.Logf("%s condition Reason set to %s, expected %s", condName, cond.Reason, condReason)
 			}
 
-			t.Logf("%s condition set to %s, expected %s", condName, cond.Status, condValue)
+			t.Logf("%s condition set to Status %s with Reason %s, expected Status %s", condName, cond.Status, cond.Reason, condValue)
 		}
 	}
 
